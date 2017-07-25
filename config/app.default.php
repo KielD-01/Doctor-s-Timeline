@@ -118,6 +118,13 @@ return [
             'duration' => '+1 years',
             'url' => env('CACHE_CAKEMODEL_URL', null),
         ],
+        'users' => [
+            'className' => 'File',
+            'prefix' => false,
+            'path' => CACHE . 'users/',
+            'serialization' => true,
+            'duration' => '+1 month'
+        ]
     ],
 
     /**
