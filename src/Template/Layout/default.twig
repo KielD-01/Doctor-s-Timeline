@@ -7,7 +7,11 @@
 </head>
 
 <body>
-{{ _view.fetch('content') | raw }}
+<div class="content">
+    <div class="row">
+        {{ _view.fetch('content') | raw }}
+    </div>
+</div>
 
 {{ _view.Html.script('/node_modules/jquery/dist/jquery.min') | raw }}
 {{ _view.Html.script('/node_modules/materialize-css/dist/js/materialize.min') | raw }}
