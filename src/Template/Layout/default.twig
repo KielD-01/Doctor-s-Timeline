@@ -1,0 +1,16 @@
+<html>
+<head>
+    {{ _view.fetch('css') | raw }}
+    {{ _view.fetch('script') | raw }}
+
+    {{ _view.Html.css('/node_modules/materialize-css/dist/css/materialize.min') | raw }}
+</head>
+
+<body>
+{{ _view.fetch('content') | raw }}
+
+{{ _view.Html.script('/node_modules/jquery/dist/jquery.min') | raw }}
+{{ _view.Html.script('/node_modules/materialize-css/dist/js/materialize.min') | raw }}
+
+</body>
+</html>

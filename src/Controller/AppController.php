@@ -12,6 +12,7 @@
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Controller\Controller;
@@ -28,6 +29,8 @@ use Cake\Event\Event;
 class AppController extends Controller
 {
 
+    protected $_user = [];
+
     /**
      * Initialization hook method.
      *
@@ -42,7 +45,33 @@ class AppController extends Controller
         parent::initialize();
 
         $this->loadComponent('RequestHandler');
-        $this->loadComponent('Flash');
+
+        /**
+         * Configuring Authentication
+         */
+        $this->loadComponent('Auth', [
+            'authenticate' => [
+                'Form' => [
+                    'fields' => [
+                        'username' => 'username',
+                        'password' => 'password'
+                    ],
+                    'userModel' => 'Users'
+                ],
+                'logoutRedirect' => [
+                    'controller' => 'Pages',
+                    'action' => 'login',
+                    'plugin' => null
+                ]
+            ]
+        ]);
+
+        /**
+         * Making access to User object easier
+         */
+        if ($this->Auth->user()) {
+            $this->_user = $this->Auth->user();
+        }
 
         /*
          * Enable the following components for recommended CakePHP security settings.
@@ -65,5 +94,30 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
+    }
+
+    /**
+     * Returns to a client JSON Response
+     *
+     * @param array $data
+     * @param array $errors
+     * @param null $message
+     * @param int $status
+     * @return \Cake\Http\Response
+     */
+    protected function _jsonResponse($data = [], $errors = [], $message = null, $status = 200)
+    {
+        $response = $this->response;
+
+        return $response
+            ->withType('json')
+            ->withStringBody(json_encode([
+                'data' => $data,
+                'errors' => $errors,
+                'message' => $message,
+                'code' => $status
+            ]))
+            ->withStatus($status);
+
     }
 }
