@@ -28,3 +28,4 @@
 *bower_components*
 *.lock
 /.idea
+/tmp/*
